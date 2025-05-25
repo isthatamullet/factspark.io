@@ -9,7 +9,22 @@ export const appRouter = router({
         text: `Hello ${input?.name ?? 'world'} from FactSpark.io tRPC!`,
       };
     }),
-  // You'll add more procedures here for fact-checking, etc.
+  submitClaim: publicProcedure
+    .input(
+      z.object({
+        text: z.string().min(1, { message: "Claim cannot be empty." }),
+      })
+    )
+    .mutation(async ({ input }) => {
+      console.log(`Server received claim to check: "${input.text}"`);
+      // Simulate processing and AI call for now
+      // In a real app, this is where you'd call Gemini, query Upstash Vector, etc.
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+      return {
+        submittedClaim: input.text,
+        status: "Claim received by server. Simulated analysis complete.",
+      };
+    }),
 });
 
 // Export type router type signature,

@@ -1,34 +1,47 @@
-"use client"; // Add this to make it a client component
+"use client";
 
-import { trpc } from "@/lib/trpc/client"; // Import the tRPC client
+import { trpc } from "@/lib/trpc/client";
 import { useState, type FormEvent } from "react";
 
 export default function HomePage() {
-  // Use the tRPC hook to call the 'greeting' procedure
+  // tRPC hook for the initial greeting
   const { data: greetingData, isLoading: greetingIsLoading } = trpc.greeting.useQuery({
     name: "FactSpark User",
   });
 
+  // State for the claim input form
   const [claimText, setClaimText] = useState("");
   const [factCheckResult, setFactCheckResult] = useState<{
     submittedClaim: string;
     status: string;
-    analysis?: string; // To store the analysis or error message from Gemini
+    analysis?: string;
   } | null>(null);
 
+  // Fetch historical claims
+  const {
+    data: historicalClaims,
+    isLoading: historicalClaimsLoading,
+    error: historicalClaimsError,
+    refetch: refetchHistoricalClaims, // Added refetch function
+  } = trpc.getHistoricalClaims.useQuery(
+    undefined, // No input for this query
+    { refetchOnWindowFocus: false } // Optional: prevent refetching on window focus
+  );
+
+  // tRPC mutation for submitting a new claim
   const submitClaimMutation = trpc.submitClaim.useMutation({
     onSuccess: (data) => {
       setFactCheckResult(data);
-      // Optionally clear the input: setClaimText("");
+      setClaimText(""); // Clear the input field on success
+      refetchHistoricalClaims(); // Refetch historical claims to include the new one
       console.log("Claim submission successful:", data);
     },
     onError: (error) => {
       console.error("Error submitting claim:", error);
-      // Display a more user-friendly error or use a toast notification
       setFactCheckResult({
         submittedClaim: claimText,
-        status: "Error processing claim:", // General status for error
-        analysis: error.message, // Put the actual error message in the analysis field
+        status: "Error processing claim:",
+        analysis: error.message,
       });
     },
   });
@@ -51,6 +64,7 @@ export default function HomePage() {
           {greetingData && <p>{greetingData.text}</p>}
         </div>
 
+        {/* Claim Submission Form */}
         <form onSubmit={handleSubmit} className="space-y-4 mb-8">
           <div>
             <label htmlFor="claim" className="sr-only">
@@ -76,18 +90,46 @@ export default function HomePage() {
           </button>
         </form>
 
+        {/* Fact Check Result Display */}
         {factCheckResult && (
           <div className="mt-6 p-4 border border-gray-200 rounded-md bg-gray-50 text-left">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800">Preliminary Check:</h3>
+            <h3 className="text-lg font-semibold mb-2 text-gray-800">Current Check:</h3>
             <p className="mb-1 text-gray-700">
               <strong>Submitted:</strong> {factCheckResult.submittedClaim}
             </p>
             <p className="text-gray-700 mb-2"><strong>Status:</strong> {factCheckResult.status}</p>
             {factCheckResult.analysis && (
-              <div className="p-3 bg-white border border-gray-300 rounded whitespace-pre-wrap"><p className="text-sm text-gray-800">{factCheckResult.analysis}</p></div>
+              <div className="p-3 bg-white border border-gray-300 rounded whitespace-pre-wrap">
+                <p className="text-sm text-gray-800">{factCheckResult.analysis}</p>
+              </div>
             )}
           </div>
         )}
+
+        {/* Historical Claims Display */}
+        <div className="mt-12 w-full text-left">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Previously Checked Claims</h2>
+          {historicalClaimsLoading && <p className="text-gray-600">Loading historical claims...</p>}
+          {historicalClaimsError && <p className="text-red-600">Error loading claims: {historicalClaimsError.message}</p>}
+          {historicalClaims && historicalClaims.length === 0 && <p className="text-gray-600">No claims have been checked yet.</p>}
+          {historicalClaims && historicalClaims.length > 0 && (
+            <ul className="space-y-6">
+              {historicalClaims.map((claim: any) => ( // Consider defining a proper type for 'claim'
+                <li key={claim.id} className="p-4 border border-gray-200 rounded-md shadow-sm bg-white">
+                  <p className="text-xs text-gray-500 mb-1">
+                    Checked on: {new Date(claim.submitted_at).toLocaleString()}
+                  </p>
+                  <p className="font-medium text-gray-800 mb-2">{claim.claim_text}</p>
+                  {claim.analysis_text && (
+                    <div className="p-3 bg-gray-50 border border-gray-200 rounded whitespace-pre-wrap text-sm text-gray-700">
+                      {claim.analysis_text}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <p className="mt-12 text-md text-gray-600">
           Full AI-Powered Fact Checking - Coming Soon!

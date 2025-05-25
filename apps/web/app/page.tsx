@@ -1,7 +1,15 @@
 "use client";
 
 import { trpc } from "@/lib/trpc/client";
+import type { inferRouterOutputs } from "@trpc/server";
 import { useState, type FormEvent } from "react";
+import type { AppRouter } from "../server/trpc/routers/_app"; // Adjust path as necessary
+
+// Infer types from your tRPC router
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type FactCheckResult = RouterOutput["submitClaim"];
+type HistoricalClaim = RouterOutput["getHistoricalClaims"][number]; // getHistoricalClaims returns an array
+
 
 export default function HomePage() {
   // tRPC hook for the initial greeting
@@ -11,18 +19,14 @@ export default function HomePage() {
 
   // State for the claim input form
   const [claimText, setClaimText] = useState("");
-  const [factCheckResult, setFactCheckResult] = useState<{
-    submittedClaim: string;
-    status: string;
-    analysis?: string;
-  } | null>(null);
+  const [factCheckResult, setFactCheckResult] = useState<FactCheckResult | null>(null);
 
   // Fetch historical claims
   const {
     data: historicalClaims,
     isLoading: historicalClaimsLoading,
     error: historicalClaimsError,
-    refetch: refetchHistoricalClaims, // Added refetch function
+    refetch: refetchHistoricalClaims,
   } = trpc.getHistoricalClaims.useQuery(
     undefined, // No input for this query
     { refetchOnWindowFocus: false } // Optional: prevent refetching on window focus
@@ -31,7 +35,7 @@ export default function HomePage() {
   // tRPC mutation for submitting a new claim
   const submitClaimMutation = trpc.submitClaim.useMutation({
     onSuccess: (data) => {
-      setFactCheckResult(data);
+      setFactCheckResult(data); // data is already correctly typed as FactCheckResult
       setClaimText(""); // Clear the input field on success
       refetchHistoricalClaims(); // Refetch historical claims to include the new one
       console.log("Claim submission successful:", data);
@@ -42,6 +46,7 @@ export default function HomePage() {
         submittedClaim: claimText,
         status: "Error processing claim:",
         analysis: error.message,
+        retrievedSimilarClaimText: null, // Ensure this is set on error
       });
     },
   });
@@ -97,6 +102,12 @@ export default function HomePage() {
             <p className="mb-1 text-gray-700">
               <strong>Submitted:</strong> {factCheckResult.submittedClaim}
             </p>
+            {/* Display note if analysis is from a similar claim */}
+            {factCheckResult.retrievedSimilarClaimText && (
+              <p className="mb-1 text-sm text-blue-700 italic">
+                <strong>Note:</strong> This analysis is based on a previously checked similar claim: "{factCheckResult.retrievedSimilarClaimText}"
+              </p>
+            )}
             <p className="text-gray-700 mb-2"><strong>Status:</strong> {factCheckResult.status}</p>
             {factCheckResult.analysis && (
               <div className="p-3 bg-white border border-gray-300 rounded whitespace-pre-wrap">
@@ -114,7 +125,7 @@ export default function HomePage() {
           {historicalClaims && historicalClaims.length === 0 && <p className="text-gray-600">No claims have been checked yet.</p>}
           {historicalClaims && historicalClaims.length > 0 && (
             <ul className="space-y-6">
-              {historicalClaims.map((claim: any) => ( // Consider defining a proper type for 'claim'
+              {historicalClaims.map((claim) => ( // claim is now correctly typed as HistoricalClaim
                 <li key={claim.id} className="p-4 border border-gray-200 rounded-md shadow-sm bg-white">
                   <p className="text-xs text-gray-500 mb-1">
                     Checked on: {new Date(claim.submitted_at).toLocaleString()}

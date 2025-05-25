@@ -13,6 +13,7 @@ export default function HomePage() {
   const [factCheckResult, setFactCheckResult] = useState<{
     submittedClaim: string;
     status: string;
+    analysis?: string; // To store the analysis or error message from Gemini
   } | null>(null);
 
   const submitClaimMutation = trpc.submitClaim.useMutation({
@@ -25,8 +26,9 @@ export default function HomePage() {
       console.error("Error submitting claim:", error);
       // Display a more user-friendly error or use a toast notification
       setFactCheckResult({
-        submittedClaim: claimText, // Show what was attempted
-        status: `Error: ${error.message}`,
+        submittedClaim: claimText,
+        status: "Error processing claim:", // General status for error
+        analysis: error.message, // Put the actual error message in the analysis field
       });
     },
   });
@@ -77,8 +79,13 @@ export default function HomePage() {
         {factCheckResult && (
           <div className="mt-6 p-4 border border-gray-200 rounded-md bg-gray-50 text-left">
             <h3 className="text-lg font-semibold mb-2 text-gray-800">Preliminary Check:</h3>
-            <p className="mb-1 text-gray-700"><strong>Submitted:</strong> {factCheckResult.submittedClaim}</p>
-            <p className="text-gray-700"><strong>Status:</strong> {factCheckResult.status}</p>
+            <p className="mb-1 text-gray-700">
+              <strong>Submitted:</strong> {factCheckResult.submittedClaim}
+            </p>
+            <p className="text-gray-700 mb-2"><strong>Status:</strong> {factCheckResult.status}</p>
+            {factCheckResult.analysis && (
+              <div className="p-3 bg-white border border-gray-300 rounded whitespace-pre-wrap"><p className="text-sm text-gray-800">{factCheckResult.analysis}</p></div>
+            )}
           </div>
         )}
 

@@ -1,5 +1,6 @@
 import { router, publicProcedure } from '../trpc';
 import { z } from 'zod';
+import { analyzeClaimWithGemini } from '../../ai/gemini'; // Import the Gemini utility
 
 export const appRouter = router({
   greeting: publicProcedure
@@ -17,13 +18,19 @@ export const appRouter = router({
     )
     .mutation(async ({ input }) => {
       console.log(`Server received claim to check: "${input.text}"`);
-      // Simulate processing and AI call for now
-      // In a real app, this is where you'd call Gemini, query Upstash Vector, etc.
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-      return {
-        submittedClaim: input.text,
-        status: "Claim received by server. Simulated analysis complete.",
-      };
+      try {
+        const analysis = await analyzeClaimWithGemini(input.text);
+        return {
+          submittedClaim: input.text,
+          status: "Analysis from Gemini:", // Updated status message
+          analysis: analysis, // Include the actual analysis from Gemini
+        };
+      } catch (error) {
+        console.error("Error in submitClaim calling Gemini:", error);
+        // Propagate a user-friendly error message to the client
+        // Consider creating custom tRPC error codes for more specific client-side handling
+        throw new Error("Failed to process claim with AI service. Please try again later.");
+      }
     }),
 });
 

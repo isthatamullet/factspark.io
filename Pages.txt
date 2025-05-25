@@ -1,0 +1,561 @@
+Complete Page Specifications & Copy
+
+## 1. Homepage (`/`)
+
+### Visual Layout
+**Header Section**
+- Top navigation bar: `bg-[#1A1B1E]` with `border-b border-[#374151]`
+- FactSpark.io logo (left): White text with blue search icon accent `#4F46E5`
+- Navigation links (center): "Browse", "Categories", "Data", "About" in `text-[#D1D5DB]`
+- Dark mode toggle (right): Switch component with `#4F46E5` active state
+
+**Hero Section**
+- Full-width container: `bg-gradient-to-br from-[#0A0A0B] via-[#1A1B1E] to-[#252629]`
+- Centered content: `max-w-4xl mx-auto px-6 py-24`
+- Main headline: `text-5xl md:text-6xl font-bold text-[#F9FAFB] mb-6`
+- Subheadline: `text-xl text-[#D1D5DB] mb-12 max-w-2xl mx-auto`
+- URL input container: `bg-[#1A1B1E] border border-[#374151] rounded-2xl p-8 shadow-2xl`
+
+**URL Submission Interface**
+- Input field: `w-full h-16 bg-[#252629] border border-[#374151] rounded-xl px-6 text-[#F9FAFB] text-lg`
+- Submit button: `bg-[#4F46E5] hover:bg-[#4338CA] text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 hover:scale-105`
+
+**Recent Analyses Section**
+- Section title: `text-3xl font-bold text-[#F9FAFB] mb-8 text-center`
+- Card grid: `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`
+- Each card: `bg-[#1A1B1E] border border-[#374151] rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`
+
+### Copy Content
+```
+Hero Headline: "AI-Powered Fact-Checking for the Information Age"
+
+Subheadline: "Submit any URL and get instant, transparent analysis of claims with AI-verified sources. Built for accuracy, designed for trust."
+
+Input Placeholder: "Paste any article URL here to start fact-checking..."
+
+Submit Button: "Analyze Article"
+
+Recent Analyses Title: "Recently Fact-Checked"
+
+Trust Indicators:
+- "✓ Over 50,000 claims verified"
+- "✓ Sources from 200+ reputable publications"
+- "✓ Average analysis time: 45 seconds"
+```
+
+---
+
+## 2. Article Analysis Results Page (`/analysis/[id]`)
+
+### Visual Layout
+**Article Header**
+- Full-width hero: `bg-[#1A1B1E] border-b border-[#374151] py-12`
+- Article title: `text-4xl font-bold text-[#F9FAFB] mb-4`
+- Source info: `text-[#9CA3AF] flex items-center gap-4`
+- Publication date & original URL link
+
+**Overall Score Section**
+- Container: `bg-[#252629] rounded-2xl p-8 mb-8`
+- Circular progress indicator: `w-32 h-32` with dynamic color based on score
+- Score display: `text-4xl font-bold text-[#F9FAFB]`
+- Confidence level: `text-[#9CA3AF] text-sm`
+- Summary text: `text-[#D1D5DB] text-lg leading-relaxed`
+
+**Claims Breakdown**
+- Section header: `text-2xl font-bold text-[#F9FAFB] mb-6`
+- Claim cards: `bg-[#1A1B1E] border border-[#374151] rounded-xl mb-4`
+- Expandable details with smooth accordion animation
+- Source citations with external link icons
+- Verification reasoning in `text-[#D1D5DB]`
+
+**Sources Section**
+- Transparent background with subtle border
+- Source cards showing reliability metrics
+- Recency indicators with color coding
+- Publication information and bias ratings
+
+### Copy Content
+```
+Overall Assessment Examples:
+"High Accuracy" / "Mixed Accuracy" / "Low Accuracy" / "Unverifiable Claims"
+
+Summary Template: "This article contains [X] verifiable claims. Our AI analysis found [Y]% to be accurate based on [Z] sources published within [timeframe]. [Additional context about any limitations or notable findings]."
+
+Claim Labels:
+- "✓ Verified True"
+- "⚠ Partially Accurate"
+- "✗ Inaccurate"
+- "? Unverifiable"
+
+Source Reliability:
+- "High Reliability Source"
+- "Moderate Reliability"
+- "Limited Information Available"
+```
+
+---
+
+## 3. Browse/Archive Page (`/browse`)
+
+### Visual Layout
+**Filter Sidebar** (Left 1/4 width)
+- Container: `bg-[#252629] h-full p-6`
+- Filter sections with collapsible headers
+- Category checkboxes with custom styling
+- Date range picker with dark theme
+- Accuracy score slider with `#4F46E5` accent
+- Clear filters button
+
+**Main Content Area** (Right 3/4 width)
+- Search bar: `w-full h-12 bg-[#1A1B1E] border border-[#374151] rounded-lg`
+- Sort dropdown: `bg-[#252629] border border-[#374151]`
+- Results grid: `grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6`
+- Infinite scroll with loading indicators
+
+**Article Cards**
+- Card container: `bg-[#1A1B1E] border border-[#374151] rounded-xl overflow-hidden`
+- Featured image: `aspect-video object-cover`
+- Content padding: `p-6`
+- Accuracy badge: Floating top-right with appropriate color
+- Title, excerpt, and metadata styling
+
+### Copy Content
+```
+Page Title: "Fact-Check Archive"
+Subtitle: "Browse our complete database of analyzed articles"
+
+Filter Labels:
+- "Categories"
+- "Accuracy Rating"
+- "Date Range"
+- "Source Type"
+- "Analysis Status"
+
+Sort Options:
+- "Most Recent"
+- "Highest Accuracy"
+- "Most Controversial"
+- "Most Shared"
+
+No Results Message: "No articles match your current filters. Try adjusting your search criteria."
+```
+
+---
+
+## 4. Data Analytics Page (`/data`) - NEW
+
+### Visual Layout
+**Page Header**
+- Hero section: `bg-gradient-to-r from-[#1A1B1E] to-[#252629] py-16`
+- Title: `text-4xl font-bold text-[#F9FAFB] mb-4`
+- Description: `text-xl text-[#D1D5DB] max-w-3xl`
+
+**Dashboard Grid**
+- Container: `grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-12`
+- Stat cards: `bg-[#1A1B1E] border border-[#374151] rounded-xl p-6`
+
+**Interactive Charts Section**
+- Full-width chart containers with responsive design
+- Tabbed interface for different data views
+- Drill-down capabilities with smooth transitions
+- Export functionality for data transparency
+
+### Chart Specifications
+
+**1. Accuracy Trends Over Time**
+- Line chart showing daily/weekly/monthly accuracy rates
+- Separate lines for each category
+- Interactive tooltips showing specific data points
+- Date range selector
+- Color scheme: `#10B981` (high accuracy), `#F59E0B` (medium), `#EF4444` (low)
+
+**2. Misinformation Heatmap**
+- Geographic visualization of analyzed content origins
+- Color intensity based on misinformation frequency
+- Click to drill down by region/country
+- Toggle between absolute numbers and per-capita rates
+
+**3. Source Reliability Distribution**
+- Donut chart showing source quality breakdown
+- Interactive segments with detailed source lists
+- Reliability categories: Highly Reliable, Mostly Reliable, Mixed, Questionable
+- Click to explore specific sources in each category
+
+**4. Claim Verification Speed**
+- Histogram showing analysis time distribution
+- Separate charts for different claim complexities
+- Performance metrics and optimization tracking
+- Goal lines and benchmark comparisons
+
+**5. Topic Analysis Bubble Chart**
+- Bubble size = frequency of analysis
+- X-axis = average accuracy score
+- Y-axis = public interest/engagement
+- Color = category type
+- Hover for detailed breakdowns
+
+**6. Temporal Misinformation Patterns**
+- Calendar heatmap showing misinformation spikes
+- Correlation with major events
+- Seasonal trend analysis
+- Pattern recognition insights
+
+### Data Insights Panels
+Each chart accompanied by:
+- Key findings summary
+- Methodology explanation
+- Data freshness indicators
+- Related trends and correlations
+
+### Copy Content
+```
+Page Title: "FactSpark Analytics: Transparency Through Data"
+
+Subtitle: "Explore real-time insights into online misinformation patterns, source reliability, and fact-checking effectiveness."
+
+Key Statistics Cards:
+- "Articles Analyzed This Month: [X,XXX]"
+- "Average Accuracy Score: [XX]%"
+- "Claims Verified: [XXX,XXX]"
+- "Source Partners: [XXX]"
+- "Response Time: [XX]s average"
+
+Chart Descriptions:
+- "Track how information accuracy varies across time and topics"
+- "Discover which regions and sources contribute to misinformation"
+- "Understand our verification process performance and reliability"
+- "Explore the relationship between claim complexity and accuracy"
+
+Methodology Note: "All data is anonymized and aggregated to protect user privacy while maintaining transparency about our fact-checking effectiveness."
+```
+
+---
+
+## 5. About/Methodology Page (`/about`)
+
+### Visual Layout
+**Hero Section**
+- Mission statement banner with video background (subtle, looped)
+- Overlay: `bg-black bg-opacity-60`
+- Centered text with strong typography hierarchy
+
+**How It Works Section**
+- Step-by-step process visualization
+- Animated timeline with scroll-triggered animations
+- Icon-based steps with detailed explanations
+- Technical details in expandable sections
+
+**AI Transparency Section**
+- Model information and capabilities
+- Limitation disclosures
+- Bias mitigation strategies
+- Source selection criteria
+
+**Team Section**
+- Founder/team information
+- Expertise and background
+- Commitment to accuracy and transparency
+
+### Copy Content
+```
+Mission Statement: "FactSpark.io empowers informed decision-making by providing transparent, AI-driven fact-checking that helps users navigate our complex information landscape."
+
+How It Works:
+1. "Content Extraction: Our AI safely scrapes and analyzes article content"
+2. "Claim Identification: Advanced language models identify specific factual claims"
+3. "Source Retrieval: We search our curated database of reliable sources"
+4. "Verification: AI compares claims against verified information"
+5. "Transparent Results: You receive detailed analysis with full source attribution"
+
+AI Transparency:
+"We use Google's Gemini AI combined with Vertex AI Search to ensure accurate, up-to-date fact verification. Our system prioritizes sources published within 12 hours of the analyzed content, falling back to recent sources when needed."
+
+Limitations:
+"Our AI system excels at factual verification but may struggle with opinion-based content, humor, or highly nuanced claims. We always recommend critical thinking alongside our analysis."
+```
+
+---
+
+## 6. Search Results Page (`/search`)
+
+### Visual Layout
+**Search Header**
+- Search query display with edit capability
+- Result count and timing information
+- Filter pills for quick refinement
+
+**Results Layout**
+- Mixed content types: articles, claims, sources
+- Relevance-based ranking with clear indicators
+- Snippet previews with search term highlighting
+- Quick action buttons (analyze, bookmark, share)
+
+### Copy Content
+```
+Results Header: "Found [XXX] results for '[search query]' in [X.XX] seconds"
+
+Filter Pills: "Articles", "Claims", "Sources", "Categories"
+
+No Results: "We couldn't find anything matching '[query]'. Try different keywords or browse our categories."
+```
+
+---
+
+## 7. Admin Dashboard (`/admin`)
+
+### Visual Layout
+**Metrics Overview**
+- KPI cards in responsive grid
+- Real-time updating counters
+- Color-coded performance indicators
+- Quick action buttons for common tasks
+
+**Processing Queue**
+- Table/card view of pending analyses
+- Status indicators with progress bars
+- Batch action controls
+- Priority sorting and filtering
+
+**System Health**
+- API status indicators
+- Performance metrics
+- Error rate monitoring
+- Database health checks
+
+### Copy Content
+```
+Dashboard Title: "FactSpark Admin Dashboard"
+
+KPI Labels:
+- "Analyses Today"
+- "Queue Length"
+- "Average Processing Time"
+- "Error Rate"
+- "User Engagement"
+
+Queue Status:
+- "Queued" (gray)
+- "Processing" (blue)
+- "Review Required" (orange)
+- "Published" (green)
+- "Failed" (red)
+```
+
+---
+
+## CSS Implementation Guidelines
+
+### Global Styles
+```css
+/* Base dark theme variables */
+:root {
+  --bg-primary: #0A0A0B;
+  --bg-secondary: #1A1B1E;
+  --bg-surface: #252629;
+  --accent-primary: #4F46E5;
+  --accent-success: #10B981;
+  --accent-warning: #F59E0B;
+  --accent-error: #EF4444;
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --text-muted: #9CA3AF;
+  --border: #374151;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+```
+
+### Component-Specific Animations
+```css
+/* Card hover effects */
+.analysis-card {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Button interactions */
+.btn-primary {
+  transform: scale(1);
+}
+
+.btn-primary:hover {
+  transform: scale(1.02) translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Loading states */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 25%,
+    var(--bg-surface) 50%,
+    var(--bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Accordion animations */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordion-content.open {
+  max-height: 500px;
+  transition: max-height 0.3s ease-in;
+}
+```
+
+---
+
+## Public URL Submission: Pros vs Cons Analysis
+
+### **Allowing Public URL Submission**
+
+#### Pros:
+1. **Increased Engagement & Scale**
+   - Exponentially more content analysis
+   - Crowdsourced fact-checking at scale
+   - Higher user engagement and retention
+   - Natural growth through user-generated demand
+
+2. **Market Validation**
+   - Real-time feedback on user needs
+   - Organic content prioritization
+   - Better understanding of misinformation patterns
+   - Valuable analytics for platform improvement
+
+3. **Monetization Opportunities**
+   - Freemium model potential (limits on free tier)
+   - Premium features for power users
+   - API access for businesses
+   - Advertisement opportunities
+
+4. **Network Effects**
+   - Viral potential through sharing
+   - Community building around fact-checking
+   - Social proof and credibility
+   - Natural marketing through user advocacy
+
+#### Cons:
+1. **Resource Management**
+   - Unpredictable API costs from Google Cloud
+   - Potential system overload during viral moments
+   - Need for robust rate limiting and queuing
+   - Storage costs for increased data volume
+
+2. **Quality Control Challenges**
+   - Spam and abuse prevention needed
+   - Irrelevant or duplicate content submissions
+   - Potential gaming of the system
+   - Need for content moderation
+
+3. **Technical Complexity**
+   - User management and authentication
+   - Abuse prevention systems
+   - Scalable infrastructure requirements
+   - More complex error handling
+
+4. **Legal & Safety Concerns**
+   - Potential liability for user-submitted content
+   - DMCA and copyright considerations
+   - Privacy implications of user data
+   - International compliance requirements
+
+### **Admin-Only URL Submission**
+
+#### Pros:
+1. **Complete Control**
+   - Curated, high-quality content selection
+   - Predictable resource usage and costs
+   - Strategic content prioritization
+   - Professional editorial standards
+
+2. **Simplified Operations**
+   - No user management complexity
+   - Reduced technical infrastructure needs
+   - Easier to maintain system stability
+   - Lower legal and compliance burden
+
+3. **Quality Assurance**
+   - Every analysis meets editorial standards
+   - No spam or irrelevant content
+   - Consistent brand representation
+   - Expert judgment in content selection
+
+4. **Resource Efficiency**
+   - Controlled API usage and costs
+   - Focused development on core features
+   - Sustainable operational model
+   - Better ROI on analysis investments
+
+#### Cons:
+1. **Limited Scale & Growth**
+   - Bottleneck on content creation
+   - Reduced user engagement
+   - Slower market penetration
+   - Limited viral potential
+
+2. **Missed Opportunities**
+   - May miss trending misinformation
+   - Less responsive to user needs
+   - Reduced market feedback
+   - Limited monetization options
+
+3. **Competitive Disadvantage**
+   - Less responsive than crowd-sourced platforms
+   - Reduced value proposition for users
+   - Limited network effects
+   - Harder to differentiate from other fact-checkers
+
+### **Recommended Approach: Hybrid Model**
+
+**Phase 1 (MVP)**: Admin-only to establish quality and systems
+**Phase 2**: Limited public submission with strict rate limits
+**Phase 3**: Full public access with freemium monetization
+
+**Implementation Strategy**:
+- Start with admin curation to build credibility
+- Introduce public submission with manual approval
+- Gradually automate with AI content filtering
+- Implement robust rate limiting and abuse prevention
+- Build monetization around premium features
+
+This approach maximizes learning while controlling risk and resource usage.
+Share FactSpark.io Complete Page Specifications & Copy

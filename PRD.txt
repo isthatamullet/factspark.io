@@ -1,0 +1,530 @@
+Product Requirement Document: FactSpark.io
+Version: 1.1
+Date: May 22, 2025
+Author: AI Assistant (Gemini) & User
+Status: Revised Draft
+1. Introduction / Overview
+	•	1.1. Purpose of Document: This document outlines the product requirements, technical specifications, features, data flows, and implementation roadmap for FactSpark.io, an AI-powered website designed to provide users with fact-checking analysis of online content.
+	•	1.2. Product Vision: To empower individuals with an accessible and reliable tool to critically evaluate the accuracy of online information, combating the spread of misinformation through transparent, AI-driven analysis.
+	•	1.3. Goals & Objectives:
+	•	Develop an MVP (Minimum Viable Product) of FactSpark.io that allows users to submit URLs for AI-driven fact-checking.
+	•	Provide users with a clear summary of findings, including an assessment of claim accuracy and supporting evidence.
+	•	Ensure a high degree of trustworthiness and transparency in the fact-checking process.
+	•	Build a maintainable and scalable platform.
+	•	Achieve this within an initial development budget context of approximately $10,000.
+	•	1.4. Target Audience:
+	•	General public/casual internet users seeking quick verification of online claims.
+	•	Students and researchers for preliminary source evaluation.
+	•	Content consumers wanting to gauge the authenticity of articles and posts.
+	•	1.5. Scope:
+	•	MVP: Core URL submission, content scraping, claim extraction, AI-driven verification against reputable sources using RAG, results display with summary and evidence. Includes light/dark mode and responsive design.
+	•	Future Considerations (Post-MVP): User accounts, history, advanced image/video analysis, browser extension, expanded source integration, human review workflows.
+	•	1.6. Success Metrics (MVP):
+	•	Number of successful URL analyses per day on FactSpark.io.
+	•	User engagement (time on site, reports viewed).
+	•	Qualitative feedback on the clarity and perceived accuracy of results.
+	•	System uptime and responsiveness.
+2. User Stories / Features
+	•	2.1. Core Features (MVP):
+	•	F1: URL Submission:
+	•	User Story: As a user, I want to paste a URL into an input field on the FactSpark.io website so that I can submit it for fact-checking.
+	•	Acceptance Criteria:
+	•	Input field clearly visible on the main page.
+	•	Accepts valid URL formats.
+	•	Submission button triggers the fact-checking process.
+	•	F2: Content Processing & Claim Analysis:
+	•	User Story: As a system, when a URL is submitted to FactSpark.io, I need to fetch its content, extract key claims, and verify each claim against reputable sources using AI.
+	•	Acceptance Criteria: (Internal - detailed in data flow & implementation)
+	•	Successfully scrapes text content from valid, accessible URLs.
+	•	AI identifies and extracts distinct factual claims from the text.
+	•	Each claim is processed using a RAG pipeline against a defined set of reputable sources/knowledge base.
+	•	Each claim receives a nuanced accuracy score/rating (e.g., True, Mostly True, Mixed, False, Unverifiable) and a confidence level.
+	•	Evidence supporting the rating is identified.
+	•	F3: Results Display:
+	•	User Story: As a user of FactSpark.io, after submitting a URL, I want to see a clear, concise summary of the fact-checking analysis, including an overall assessment and a breakdown of individual claims.
+	•	Acceptance Criteria:
+	•	A dedicated results page or section displays the analysis.
+	•	An AI-generated summary explains the overall reliability of the content.
+	•	Individual claims are listed with their accuracy scores, explanations, and links/references to supporting evidence.
+	•	Process status/progress is indicated to the user while analysis is ongoing.
+	•	2.2. UI/UX Features (MVP):
+	•	F4: Responsive Design:
+	•	User Story: As a user, I want to access and use FactSpark.io effectively on my desktop, tablet, or mobile phone.
+	•	Acceptance Criteria: Website layout adapts gracefully to different screen sizes. All functionality is accessible on all supported devices.
+	•	F5: Light/Dark Mode:
+	•	User Story: As a user of FactSpark.io, I want to be able to switch between a light and dark theme for comfortable viewing.
+	•	Acceptance Criteria: A toggle allows users to switch themes. Both themes are visually consistent and maintain readability as per initial design concepts.
+	•	2.3. Non-Functional Requirements (MVP):
+	•	NFR1: Performance: Page load times for static content on FactSpark.io under 2 seconds. Fact-checking analysis for an average article completed within a reasonable timeframe (e.g., 30-90 seconds, clearly communicating progress).
+	•	NFR2: Reliability/Availability: Target 99% uptime for core FactSpark.io services. Graceful error handling for failed scrapes or AI analysis.
+	•	NFR3: Security: Protect FactSpark.io against common web vulnerabilities (XSS, CSRF). Securely manage API keys and sensitive configurations. Ensure HTTPS.
+	•	NFR4: Maintainability: Codebase for FactSpark.io is well-organized, commented, and follows chosen framework conventions. Use of Docker for consistent environments.
+	•	NFR5: Scalability (Basic): Architecture should allow for scaling of backend processing for FactSpark.io if user load increases (e.g., via serverless functions or container instances).
+3. System Architecture & Technical Stack
+	•	3.1. Overall Architecture:
+	•	Frontend: Single Page Application (SPA) or statically generated site with dynamic components for FactSpark.io.
+	•	Backend: API service handling frontend requests, orchestrating AI tasks, and managing data for FactSpark.io.
+	•	AI Core: Leverages external LLM APIs and implements a RAG pipeline for FactSpark.io.
+	•	Databases: Relational DB for general app data (if any in MVP beyond caching), Vector DB for RAG knowledge base.
+	•	Cloud Services: Primarily Google Cloud Platform (GCP).
+	•	Containerization: Docker for development and deployment consistency. ![System Architecture Diagram Placeholder - A diagram showing Frontend (FactSpark.io) <-> Backend API <-> AI Core (LLM API + RAG (Vector DB + Knowledge Base)) <-> Databases. GCP services surrounding relevant parts.]
+	•	3.2. Frontend Details:
+	•	Language/Framework: JavaScript/TypeScript with Vue.js (alternative: Svelte or React with Next.js).
+	•	Styling: Tailwind CSS. (See Section 3.8 for detailed setup guide).
+	•	Key Responsibilities: User input, API communication, results rendering, theme switching for FactSpark.io.
+	•	3.3. Backend Details:
+	•	Language/Framework: Python with FastAPI (alternative: Flask).
+	•	API Type: RESTful API.
+	•	Key Responsibilities: Handling HTTP requests, URL validation, orchestrating scraping and RAG pipeline, interacting with LLM APIs, formatting results for FactSpark.io.
+	•	3.4. AI Core Details:
+	•	LLM APIs: Google Gemini API (primary, given GCP preference). Alternatives: OpenAI GPT series, Anthropic Claude.
+	•	RAG Orchestration: LangChain or LlamaIndex (Python libraries).
+	•	Embedding Models: Google models via Vertex AI, or open-source Sentence Transformers (if self-hosting embeddings).
+	•	Knowledge Base for RAG: Initially, a curated list of RSS feeds from reputable news organizations and fact-checking sites, periodically scraped, processed, and indexed.
+	•	3.5. Database Details:
+	•	Primary Database (MVP - Optional, for caching/future use): SQLite for local development, consider PostgreSQL on GCP (Cloud SQL) if persistent relational data is needed beyond basic caching.
+	•	Vector Database (for RAG): ChromaDB (self-hosted in Docker or on a VM initially) or Google Vertex AI Vector Search.
+	•	3.6. Cloud Services (Google Cloud Platform):
+	•	Logging: Google Cloud Logging for centralized application logs from FactSpark.io.
+	•	AI Services: Vertex AI (for Gemini API access, potentially Vertex AI Vector Search, and other AI Platform capabilities).
+	•	Compute (Backend): Google Cloud Run (for containerized backend), Google Cloud Functions (for specific tasks).
+	•	Storage (Knowledge Base, if applicable): Google Cloud Storage.
+	•	3.7. Containerization:
+	•	Tool: Docker.
+	•	Usage: Containerize backend application, potentially vector database (if self-hosted), and any other services for development consistency and deployment for FactSpark.io.
+	•	3.8. Frontend Styling Setup (Tailwind CSS & Dark Mode Guide) This section provides a checklist for setting up Tailwind CSS and its dark mode functionality correctly. This should be followed during Phase 0/1 of development when setting up the frontend.
+	•	I. Core Tailwind CSS Installation & Configuration:
+	1.	Install Dependencies:
+	•	npm install -D tailwindcss postcss autoprefixer (or yarn equivalent)
+	2.	Initialize Tailwind CSS:
+	•	npx tailwindcss init -p (This creates tailwind.config.js and postcss.config.js)
+	3.	Configure tailwind.config.js:
+	•	content: Ensure this array correctly points to all template files where Tailwind classes will be used.
+	•	Example for Vue.js: content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"]
+	•	darkMode: Set the strategy. 'class' is highly recommended for manual control.
+	•	Example: darkMode: 'class',
+	4.	Create Main CSS File:
+	•	Create a main CSS file (e.g., src/input.css, src/assets/main.css, or src/index.css).
+	•	Add the Tailwind directives to this file:CSS  @tailwind base;
+	•	@tailwind components;
+	•	@tailwind utilities;
+	•	   
+	5.	Import Main CSS File:
+	•	Ensure this main CSS file is imported into the project's entry point (e.g., main.js or App.vuefor Vue.js).
+	6.	Build Process:
+	•	Ensure Tailwind CSS is being processed. The development server (e.g., Vite for Vue.js) usually handles this automatically if configured correctly. If not, a script in package.json like tailwindcss -i ./src/input.css -o ./dist/output.css --watch might be needed. (Vite handles this internally if PostCSS is configured).
+	•	II. Dark Mode Implementation (using darkMode: 'class' strategy):
+	1.	JavaScript to Toggle dark Class:
+	•	Create a script (e.g., in the main JavaScript file, a utility file, or a root Vue component's <script setup>) to:
+	•	Check localStorage for a saved theme preference.
+	•	Check OS preference (window.matchMedia('(prefers-color-scheme: dark)').matches).
+	•	Apply the 'dark' class to the <html> element (or <body>) based on the determined preference.
+	•	Create a function to toggle the 'dark' class on the <html> element and save the new preference to localStorage.
+	2.	Theme Toggle Button (UI):
+	•	Create a button in the UI that calls the toggle function from step II.1.
+	3.	Apply Dark Mode Utility Classes:
+	•	Use Tailwind's dark: variants in HTML/components.
+	•	Example: <div class="bg-white text-black dark:bg-gray-900 dark:text-white">Content</div>
+4. Data Flow Diagrams
+	•	4.1. URL Fact-Checking Process (High-Level) for FactSpark.io:User (Frontend) --1. Submit URL--> Backend API (FactSpark.io)
+	•	    Backend API --2. Validate URL--> Validation Logic
+	•	    Backend API --3. Queue/Initiate Scraping--> Scraping Service
+	•	    Scraping Service --4. Fetch & Parse Content (Text, Image URL)--> Raw Content
+	•	    Backend API --5. Send Text to AI Core--> AI Core (Claim Ext., RAG)
+	•	    AI Core --6. Extract Claims--> Claim List
+	•	    AI Core (For each Claim) --7. Query Knowledge Base--> Vector DB / Reputable Sources
+	•	    AI Core (For each Claim) --8. Send Claim + Evidence to LLM--> LLM API (Gemini)
+	•	    LLM API --9. Return Verification, Score, Explanation--> AI Core
+	•	    AI Core --10. Aggregate Results, Generate Summary--> Processed Analysis
+	•	    Backend API --11. Store/Cache Results (Optional)--> Cache DB
+	•	    Backend API --12. Return Analysis to Frontend--> User (Frontend)
+	•	    User (Frontend) --13. Display Results--> User
+	•	   
+	•	4.2. RAG Component Data Flow (Simplified) for FactSpark.io:Identified Claim (Text) --1. Create Embedding--> Embedding Model (Gemini/Vertex AI)
+	•	Claim Embedding --2. Similarity Search--> Vector DB (Reputable Source Embeddings)
+	•	Vector DB --3. Return Relevant Source Chunks--> RAG Orchestrator (LangChain/LlamaIndex)
+	•	RAG Orchestrator --4. Combine Claim + Source Chunks + Prompt--> LLM API (Gemini)
+	•	LLM API --5. Generate Verified Statement + Score + Evidence Snippets--> RAG Orchestrator
+	•	   
+5. Detailed Feature Specifications & Technical Implementation Guidance (Roadmap) for FactSpark.io
+This section outlines the phased development approach for FactSpark.io.
+	•	Phase 0: Foundation & Setup
+	•	Objective: Establish development environment, version control, core project structure, and CI basics for FactSpark.io.
+	•	Tasks:
+	1.	Initialize Git repository on GitHub/GitLab for FactSpark.io. Add README.md, comprehensive .gitignore, and optionally a License.
+	2.	Set up project structure: separate frontend and backend directories.
+	3.	Choose and set up frontend framework (Vue.js) with basic tooling (Node.js, npm/yarn). Implement Tailwind CSS setup as per Section 3.8.
+	4.	Choose and set up backend framework (Python with FastAPI) with virtual environment.
+	5.	Implement basic Dockerfiles for the backend.
+	6.	Set up configuration management using .env files (python-dotenv).
+	7.	Establish basic CI pipeline (e.g., GitHub Actions) for linting and placeholder for tests.
+	8.	Set up Google Cloud Project, enable necessary APIs (Logging, Vertex AI). Integrate basic Cloud Logging from the backend.
+	•	Phase 1: Backend Core API & URL Submission (Feature F1)
+	•	Objective: Develop the basic API endpoint for URL submission and initial validation.
+	•	Tasks (Backend - FastAPI):
+	1.	Design API endpoint spec for URL submission (e.g., POST /api/v1/check_url).
+	2.	Implement URL validation logic (format, reachability using requests or httpx).
+	3.	Implement basic error handling and responses.
+	4.	Set up request logging to Google Cloud Logging.
+	5.	Write unit tests for validation logic (pytest).
+	•	Tasks (Frontend - Vue.js):
+	1.	Create UI component for URL input field and submission button.
+	2.	Implement client-side validation for URL format.
+	3.	Implement API call to the backend endpoint.
+	4.	Display basic success/error messages or loading state. Implement theme toggle button as per Section 3.8.
+	•	Phase 2: Content Scraping Service (Part of Feature F2)
+	•	Objective: Implement robust content extraction from URLs.
+	•	Tasks (Backend - Python):
+	1.	Choose and integrate a scraping library (e.g., BeautifulSoup with requests/httpx, or Playwright for dynamic sites - consider complexity vs. $10k budget).
+	2.	Develop logic to extract main text content and a primary image URL.
+	3.	Implement error handling for scraping failures (timeouts, blocks, no content).
+	4.	Consider making scraping an asynchronous task for better responsiveness.
+	•	Phase 3: AI Claim Extraction (Part of Feature F2)
+	•	Objective: Integrate LLM to extract factual claims from scraped text.
+	•	Tasks (Backend - Python, using LangChain/LlamaIndex and Gemini API):
+	1.	Develop prompt templates for claim extraction.
+	2.	Integrate with Gemini API via its SDK on Vertex AI.
+	3.	Process scraped text and send to LLM for claim identification.
+	4.	Parse LLM response to get a structured list of claims.
+	5.	Implement error handling for LLM API calls.
+	•	Phase 4: RAG Implementation - Knowledge Base & Retrieval (Part of Feature F2)
+	•	Objective: Set up the vector database and retrieval mechanism for RAG.
+	•	Tasks (Backend - Python):
+	1.	Set up Vector Database (e.g., ChromaDB locally via Docker, or Vertex AI Vector Search).
+	2.	Develop scripts to periodically fetch content from predefined reputable sources (RSS feeds, etc.).
+	3.	Process and chunk text from these sources.
+	4.	Generate embeddings for text chunks (using Gemini embedding API or Sentence Transformers).
+	5.	Store text chunks and their embeddings in the Vector DB.
+	6.	Implement retrieval logic: take an extracted claim, generate its embedding, and query the Vector DB for similar/relevant source chunks.
+	•	Phase 5: AI Claim Verification & Scoring (Part of Feature F2)
+	•	Objective: Use LLM with retrieved evidence to verify claims and assign scores.
+	•	Tasks (Backend - Python, using LangChain/LlamaIndex and Gemini API):
+	1.	Develop prompt templates that instruct the LLM to:
+	•	Analyze a given claim against provided evidence (retrieved chunks).
+	•	Assign a nuanced accuracy score (e.g., True, Mostly True, Mixed, False, Unverifiable, Needs Context).
+	•	Provide a confidence level.
+	•	Extract/generate a brief explanation and cite evidence.
+	2.	Iterate through each extracted claim, feed it with its retrieved evidence to the LLM.
+	3.	Parse and store the verification results for each claim.
+	•	Phase 6: Summary Generation & Results API (Feature F2, F3)
+	•	Objective: Generate an overall summary and provide an API endpoint for results.
+	•	Tasks (Backend - Python, using Gemini API):
+	1.	Develop a prompt template to synthesize all individual claim verification results into a coherent overall summary about the source URL's reliability.
+	2.	Feed the aggregated claim analyses to the Gemini API for summary generation.
+	3.	Design and implement an API endpoint (e.g., GET /api/v1/results/{task_id}) to return the complete analysis (summary, individual claims with scores/evidence).
+	•	Tasks (Frontend - Vue.js):
+	1.	Implement logic to poll or receive results from the backend.
+	2.	Design and develop UI components to display:
+	•	Overall summary.
+	•	List of individual claims with their scores, explanations, and evidence links.
+	•	Contextual image (if extracted).
+	•	Clear indication of sources used for verification.
+	•	Phase 7: UI/UX Refinements (Features F4, F5)
+	•	Objective: Ensure responsive design and implement light/dark mode (verify as per Section 3.8).
+	•	Tasks (Frontend - Vue.js, Tailwind CSS):
+	1.	Thoroughly test and refine responsiveness across target device sizes (mobile, tablet, desktop).
+	2.	Ensure dark/light mode toggle (from Phase 1 & Section 3.8) works flawlessly and all components adapt correctly.
+	•	Phase 8: Testing, Error Tracking & Security Hardening
+	•	Objective: Ensure application quality, reliability, and basic security for FactSpark.io.
+	•	Tasks:
+	1.	Expand unit and integration test coverage for backend and frontend.
+	2.	Conduct end-to-end testing of the core fact-checking flow.
+	3.	Integrate error tracking service (e.g., Sentry free tier).
+	4.	Review and implement basic security best practices (input validation, HTTPS enforcement, dependency vulnerability scans with npm audit / pip-audit, review API key handling).
+	5.	Perform basic performance testing and identify obvious bottlenecks.
+	•	Phase 9: Deployment & Documentation
+	•	Objective: Deploy FactSpark.io and prepare basic documentation.
+	•	Tasks:
+	1.	Finalize Dockerfiles for production.
+	2.	Set up production hosting environments on GCP (e.g., Cloud Run for backend, Firebase Hosting or Google Cloud Storage for frontend).
+	3.	Configure CI/CD pipeline for automated deployments to production.
+	4.	Perform final deployment and smoke testing of FactSpark.io.
+	5.	Write basic user documentation (how to use the site) and developer documentation (setup, architecture overview for FactSpark.io).
+6. Deployment Strategy
+	•	6.1. Docker: All backend services for FactSpark.io (API, potentially scraping workers if separated, local Vector DB) will be containerized using Docker.
+	•	6.2. CI/CD:
+	•	Use GitHub Actions or GitLab CI/CD.
+	•	Pipeline: Lint -> Test -> Build Docker Image -> Push to Registry (e.g., Google Artifact Registry) -> Deploy to Cloud Run/other GCP service.
+	•	6.3. Hosting:
+	•	Frontend (Vue.js SPA): Google Firebase Hosting or Google Cloud Storage (with CDN).
+	•	Backend (FastAPI on Docker): Google Cloud Run for stateless, scalable deployment.
+	•	Vector DB: Google Vertex AI Vector Search (managed) or self-hosted ChromaDB on a Google Compute Engine VM (managed within budget).
+	•	Database (PostgreSQL, if used): Google Cloud SQL.
+7. Development Best Practices & Foundational Elements (Reiteration)
+	•	Version Control: Git (as per Phase 0).
+	•	Project Structure: Maintain separate, well-organized frontend and backend directories with internal modularity.
+	•	Configuration Management: Strict use of environment variables for all configurable parameters and secrets.
+	•	Logging: Comprehensive logging to Google Cloud Logging. Standardized log formats where possible.
+	•	Testing: Commitment to unit, integration, and (manual) end-to-end testing. Aim for reasonable test coverage.
+	•	Error Tracking: Proactive error monitoring in production.
+	•	Security: Follow OWASP Top 10 awareness; secure API keys; HTTPS; input validation; keep dependencies updated.
+	•	Code Reviews: If multiple developers, implement code reviews. If solo, self-review against best practices.
+8. Future Considerations / Roadmap (Post-MVP) for FactSpark.io
+	•	User accounts and history of checks.
+	•	Browser extension for on-page fact-checking.
+	•	Advanced image and video analysis capabilities.
+	•	Expanded and dynamically updated knowledge base of reputable sources.
+	•	Human-in-the-loop review system for contentious or uncertain AI findings.
+	•	Premium features based on monetization strategy.
+	•	Localization and support for multiple languages.
+
+This updated PRD for FactSpark.io, now including the explicit Tailwind CSS setup guide, should provide a very solid foundation for your development efforts with your Copilot agent!
+
+AI implementation guidelines:
+Here's my advice for creating reliable, unbiased fact-checking:
+
+## **Core AI Analysis Methodology**
+
+### **1. Multi-Layer Verification Architecture**
+
+**Primary Verification Pipeline:**
+```
+URL → Content Extraction → Claim Extraction → Source Retrieval → 
+Cross-Verification → Confidence Scoring → Human-Readable Summary
+```
+
+**Secondary Validation Layer:**
+- Cross-reference claims against multiple source types
+- Validate temporal context (when was this claim first made?)
+- Check for source consensus vs. outlier information
+- Identify potential bias in both the original content and verification sources
+
+### **2. Source Curation Strategy for Bias Mitigation**
+
+**Tier 1 Sources (Highest Weight)**
+- Academic institutions and peer-reviewed journals
+- Government statistical agencies (Bureau of Labor Statistics, CDC, etc.)
+- Established fact-checking organizations (Snopes, PolitiFact, AP Fact Check)
+- Primary documents and official statements
+
+**Tier 2 Sources (Moderate Weight)**
+- Mainstream news organizations with editorial standards
+- Industry trade publications
+- Non-profit research organizations
+- International organizations (WHO, UN, World Bank)
+
+**Tier 3 Sources (Lower Weight, Context Only)**
+- Opinion pieces clearly labeled as such
+- Social media from verified accounts
+- Press releases (when appropriately attributed)
+
+**Source Diversity Requirements:**
+- Include sources across political spectrum when relevant
+- Prioritize original reporting over aggregation
+- Weight recent sources higher for time-sensitive claims
+- Flag when consensus is unavailable
+
+## **Backend Implementation Strategy**
+
+### **Claim Extraction Prompting**
+```python
+CLAIM_EXTRACTION_PROMPT = """
+Analyze this article and extract ONLY specific, verifiable factual claims. 
+
+EXTRACT:
+✓ Statistical claims with numbers, dates, percentages
+✓ Statements about events that occurred
+✓ Claims about cause-and-effect relationships
+✓ Attributions of quotes or actions to specific people/organizations
+
+DO NOT EXTRACT:
+✗ Opinions, predictions, or subjective statements
+✗ Generally known facts (e.g., "Paris is in France")
+✗ Rhetorical questions or hypotheticals
+
+For each claim, provide:
+1. Exact quote from article
+2. Claim type (statistical, event, attribution, causal)
+3. Temporal context (when did this supposedly happen?)
+4. Specificity level (highly specific vs general)
+
+Article: {article_text}
+
+Format as JSON array with this structure:
+[{"claim": "exact quote", "type": "statistical", "temporal_context": "2024", "specificity": "high"}]
+"""
+```
+
+### **Verification Prompting Strategy**
+```python
+VERIFICATION_PROMPT = """
+You are a fact-checking analyst. Verify this claim against the provided sources.
+
+CLAIM TO VERIFY: {claim}
+TEMPORAL CONTEXT: {temporal_context}
+
+SOURCES PROVIDED:
+{sources}
+
+ANALYSIS FRAMEWORK:
+1. SOURCE EVALUATION:
+   - Are these sources authoritative for this topic?
+   - How recent are they relative to the claim?
+   - Do they directly address this specific claim?
+
+2. CLAIM VERIFICATION:
+   - Is the claim supported, contradicted, or not addressed?
+   - Are there important nuances or context missing?
+   - Is the claim partially true but misleading?
+
+3. CONFIDENCE ASSESSMENT:
+   - How certain can we be based on available evidence?
+   - What additional sources would strengthen this verification?
+
+RESPOND WITH:
+- Rating: VERIFIED, PARTIALLY_VERIFIED, CONTRADICTED, INSUFFICIENT_EVIDENCE
+- Confidence: HIGH, MEDIUM, LOW
+- Explanation: [2-3 sentences explaining your reasoning]
+- Key_sources: [list most relevant sources used]
+- Caveats: [any important limitations or context]
+
+Be conservative - if evidence is insufficient, say so clearly.
+"""
+```
+
+## **Order of Operations (Optimized Pipeline)**
+
+### **Phase 1: Content Processing (30-45 seconds)**
+1. **URL Validation & Scraping**
+   - Check robots.txt compliance
+   - Extract main article content using newspaper3k or similar
+   - Identify publication date and source metadata
+   - Extract any embedded media or data visualizations
+
+2. **Content Preprocessing**
+   - Clean HTML artifacts and ads
+   - Identify article structure (headline, subheads, body)
+   - Extract author, publication info
+   - Estimate article reading level and tone
+
+### **Phase 2: Claim Analysis (45-60 seconds)**
+3. **Initial Claim Extraction**
+   - Use Gemini for structured claim identification
+   - Categorize claims by type and verifiability
+   - Identify temporal dependencies
+   - Flag claims requiring specialized expertise
+
+4. **Claim Prioritization**
+   - Score claims by importance to article's main thesis
+   - Identify claims most likely to be misinformation
+   - Prioritize fact-checkable claims over opinions
+   - Flag claims with high social/political impact
+
+### **Phase 3: Source Retrieval (30-45 seconds)**
+5. **Intelligent Source Querying**
+   - Use Vertex AI Search with temporal filtering
+   - Query multiple variations of each claim
+   - Include synonyms and related terms
+   - Apply your tiered time-window approach
+
+6. **Source Quality Assessment**
+   - Evaluate source authority and bias
+   - Check publication dates against claim temporal context
+   - Identify primary vs secondary sources
+   - Flag potential source conflicts of interest
+
+### **Phase 4: Verification & Synthesis (60-90 seconds)**
+7. **Cross-Reference Verification**
+   - Compare each claim against retrieved sources
+   - Look for consensus vs outlier information
+   - Identify contradictions between sources
+   - Flag claims where expert consensus is evolving
+
+8. **Confidence Scoring**
+   - Weight by source quality and recency
+   - Factor in claim specificity and complexity
+   - Account for source consensus level
+   - Adjust for your system's known limitations
+
+## **Advanced Bias Mitigation Techniques**
+
+### **Source Balancing Algorithm**
+```python
+def balance_sources(sources, claim_topic):
+    """Ensure diverse perspectives while maintaining quality"""
+    
+    # Group by bias rating and authority level
+    by_bias = group_sources_by_political_lean(sources)
+    by_authority = group_sources_by_reliability(sources)
+    
+    # Prioritize high-authority sources across bias spectrum
+    balanced_sources = []
+    for bias_category in ['left', 'center', 'right']:
+        high_authority = by_authority['high'] & by_bias[bias_category]
+        balanced_sources.extend(high_authority[:3])  # Max 3 per bias category
+    
+    # Always include fact-checking organizations
+    fact_checkers = filter_fact_checking_orgs(sources)
+    balanced_sources.extend(fact_checkers[:2])
+    
+    return balanced_sources
+```
+
+### **Uncertainty Communication**
+- **High Confidence**: "Multiple reliable sources confirm..."
+- **Medium Confidence**: "Available evidence suggests... but additional verification needed"
+- **Low Confidence**: "Insufficient reliable sources to verify this claim"
+- **Conflicting Evidence**: "Sources disagree on this claim..."
+
+## **Backend Architecture Recommendations**
+
+### **Asynchronous Processing Pipeline**
+```python
+# Use Celery or similar for async processing
+@celery.task
+def process_article_analysis(url, article_id):
+    try:
+        # Phase 1: Extract and preprocess
+        content = extract_article_content(url)
+        
+        # Phase 2: Extract claims
+        claims = extract_claims_batch(content)
+        
+        # Phase 3: Parallel source retrieval
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            source_futures = {
+                executor.submit(retrieve_sources, claim): claim 
+                for claim in claims
+            }
+            
+            # Phase 4: Verify as sources come in
+            for future in as_completed(source_futures):
+                claim = source_futures[future]
+                sources = future.result()
+                verification = verify_claim(claim, sources)
+                store_verification_result(article_id, claim, verification)
+        
+        # Phase 5: Generate summary
+        generate_article_summary(article_id)
+        
+    except Exception as e:
+        handle_analysis_failure(article_id, e)
+```
+
+### **Quality Control Mechanisms**
+
+1. **Confidence Thresholds**
+   - Don't publish claims with confidence < 60%
+   - Flag controversial topics for manual review
+   - Implement cooling-off period for highly disputed claims
+
+2. **Source Freshness Validation**
+   - Automatically recheck sources older than 30 days
+   - Update verification when new authoritative sources emerge
+   - Flag when source consensus changes over time
+
+3. **Bias Detection**
+   - Monitor for consistent bias patterns in your source selection
+   - Track verification accuracy against later authoritative sources
+   - Implement feedback loops for system improvement
+
+## **Key Implementation Recommendations**
+
+1. **Start Conservative**: Better to say "insufficient evidence" than make incorrect claims
+2. **Transparency First**: Always show your reasoning and source selection
+3. **Iterative Improvement**: Track which verifications prove accurate over time
+4. **Human Oversight**: Build in review processes for high-impact claims
+5. **Temporal Sensitivity**: Your time-windowing approach is excellent - maintain it
+6. **Source Diversity**: Actively work to include ideologically diverse but reliable sources
+
+The key to trustworthy AI fact-checking is admitting uncertainty when it exists and being transparent about your methodology. Your hybrid RAG approach with temporal awareness is already a strong foundation.​​​​​​​​​​​​​​​​

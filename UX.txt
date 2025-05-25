@@ -1,0 +1,87 @@
+UX
+Here is a UI requirements document describing the styling, colors, and reactive animations for the provided mockup.
+UI Requirements Document: Dark Theme Dashboard
+1. Introduction
+This document outlines the visual styling, color scheme, and user experience (UX) requirements for the dark-themed dashboard interface, as depicted in the provided mockup. The goal is to create a visually appealing, modern, and intuitive interface with clear interactive feedback. All interactive elements must be reactive with hover and tap animations.
+2. Overall Aesthetic
+The interface employs a sophisticated dark mode aesthetic, prioritizing readability and visual comfort. It features a clean layout with rounded corners on primary containers and interactive elements, contributing to a modern and approachable feel. The design uses a strategic application of accent colors to guide the user's attention to key actions and information.
+3. Color Palette
+The color palette is designed for clarity and visual hierarchy in a dark environment. Specific hex codes are suggestions and should be finalized using a color picker from the original design files if available.
+ * Primary Background: Deep, near-black charcoal.
+   * Usage: Main application background.
+   * Suggested Hex: #1A1A1B
+ * Secondary Background (Cards/Modules): Dark slate gray, slightly lighter than the primary background to create separation.
+   * Usage: Background for content cards, sidebars, and distinct modules.
+   * Suggested Hex: #2C2C30
+ * Primary Accent Color: Vibrant, electric blue/purple.
+   * Usage: Primary call-to-action buttons (e.g., "Generate"), active navigation indicators, key icons, highlights in charts or important data points.
+   * Suggested Hex: #5052D6
+ * Secondary Accent/Highlight Color: Light, cool gray or a very pale blue.
+   * Usage: Chart elements, subtle highlights, secondary button borders or backgrounds.
+   * Suggested Hex: #A0A5E8 (for a bluish tint) or #D0D0D0 (for a neutral light gray)
+ * Primary Text Color: Off-white or very light gray.
+   * Usage: Main text, titles, labels.
+   * Suggested Hex: #E5E5E5
+ * Secondary Text Color: Medium gray.
+   * Usage: Sub-headings, descriptive text, placeholder text, less critical information.
+   * Suggested Hex: #A0A0A0
+ * Border Color: Subtle darker gray, or a slightly lighter shade than the element it's bordering for definition.
+   * Usage: Borders for cards, input fields, buttons.
+   * Suggested Hex: #3D3D42 (for use on Secondary Backgrounds)
+4. Typography
+While specific font faces are not detailed in this document, the styling should adhere to the following:
+ * Hierarchy: Clear differentiation between headings, subheadings, body text, and labels through size, weight, and color.
+ * Readability: Font choices must ensure high readability against the dark backgrounds.
+ * Color: Utilize Primary Text Color for headings and important information, and Secondary Text Color for less emphasized text. The Primary Accent Color may be used sparingly for specific text highlights if needed.
+5. Interactive Elements & Animations
+5.1 General Principles for Animations:
+ * Responsiveness: All interactive elements must provide immediate visual feedback on hover and tap/click.
+ * Subtlety & Smoothness: Animations should be subtle, smooth, and non-distracting. Transitions should typically last between 150ms and 300ms, using easing functions like ease-in-out.
+ * Clarity: Animations should clearly indicate interactivity and state changes.
+5.2 Specific Element Styling and Animations:
+ * Buttons (Primary - e.g., "Generate", "Connect Wallet"):
+   * Resting State: Primary Accent Color background, Primary Text Color text. Rounded corners.
+   * Hover State: Background lightens by ~10-15% OR a subtle glow/outer shadow in a lighter shade of the Primary Accent Color appears. Text color remains Primary Text Color. Element may subtly lift (increase box-shadow).
+   * Tap/Pressed State: Background darkens by ~10-15% from resting state. Element may appear to depress slightly.
+ * Buttons (Secondary/Pill - e.g., "Yornitiao Poreo", "Tainel"):
+   * Resting State: Secondary Background (Cards/Modules) or slightly lighter background. Primary Text Color or Secondary Text Color text. Rounded corners. Subtle border using Border Color.
+   * Hover State: Background lightens by ~10-15%. Border color may become more prominent or change to Secondary Accent/Highlight Color. Text color may brighten.
+   * Tap/Pressed State: Background darkens by ~10-15% from resting state.
+ * Navigation Links (Top Bar - e.g., "Koomus", "Baxom"):
+   * Resting State: Secondary Text Color text.
+   * Hover State: Text color changes to Primary Text Color OR a subtle underline appears using Primary Accent Color.
+   * Tap/Active State: Text color changes to Primary Accent Color.
+ * Sidebar Navigation Items (e.g., "AI Powered Fact-checking"):
+   * Resting State: Icon and text use Secondary Text Color or Primary Text Color (depending on emphasis). Background is transparent or matches the sidebar's Secondary Background.
+   * Hover State: Background of the item subtly lightens (e.g., to a shade between Secondary Background and Border Color). Icon and text color brighten or shift to Primary Text Color.
+   * Active State: A distinct visual indicator (e.g., the solid Primary Accent Color circle shown in the mockup) is present next to the item. Icon and text use Primary Text Color or Primary Accent Color. On hover, the background may still lighten as per the hover state.
+   * Tap State: A quick ripple animation starting from the tap point OR a brief flash of the hover background color.
+ * Toggle Switches (Left Sidebar):
+   * Resting State (Off): Track is a darker shade of Secondary Background or Border Color. Handle is Secondary Text Color or Primary Text Color.
+   * Resting State (On): Track is Primary Accent Color. Handle is Primary Text Color.
+   * Hover State (Handle): Handle subtly increases in size or brightness.
+   * Hover State (Track): Track background may slightly lighten.
+   * Tap State: Handle smoothly animates sliding to the opposite side. Track color transitions to reflect the new state.
+ * Content Cards/Modules (e.g., "AI Digorithm Si Doc"):
+   * Resting State: Secondary Background (Cards/Modules) background. Rounded corners. Subtle Border Color or defined by shadow.
+   * Hover State: Card subtly lifts with an increased box-shadow OR border color becomes slightly more prominent (e.g., using Secondary Accent/Highlight Color or a lighter Border Color). No change to background color unless it's a very subtle lightening.
+ * Input Fields / Dropdowns (e.g., within "AI Digorithm Si Doc"):
+   * Resting State: Background is a shade slightly darker or lighter than the card background they sit on, or Secondary Background (Cards/Modules) if on a lighter base. Primary Text Color for content, Secondary Text Color for placeholders. Subtle Border Color.
+   * Hover State: Border color becomes more prominent or changes to Primary Accent Color (subtly). Background may slightly lighten.
+   * Focus State: Border color changes to Primary Accent Color. A subtle glow or inner shadow might appear.
+   * Tap State (Dropdown): Triggers opening of the dropdown menu. Arrow icon animates (e.g., rotates 180 degrees).
+     * Dropdown Options Hover: Background of the option item highlights (e.g., using a lighter shade of Secondary Background or a subtle Primary Accent Color tint).
+ * Chart Elements (e.g., Bars in "Time Series"):
+   * Resting State: Various shades of Secondary Accent/Highlight Color or a desaturated Primary Accent Color.
+   * Hover State: The hovered bar brightens, intensifies in color, or changes to the Primary Accent Color. A tooltip displaying data may appear (functional requirement).
+   * Tap State: If interactive (e.g., for filtering), the bar may remain highlighted or change style to indicate selection.
+ * Icons (e.g., Logo, Search, Sidebar Icons):
+   * Resting State: Secondary Text Color or Primary Text Color (if part of an active element).
+   * Hover State: Icon color may brighten or shift to Primary Accent Color. Icon may subtly scale (e.g., 1.05x - 1.1x).
+6. States (General)
+ * Disabled State: Elements in a disabled state should appear visually "muted." This can be achieved by reducing opacity (e.g., to 50%), using desaturated colors, and changing the cursor to "not-allowed" on hover. They should not have hover/tap animations. (Though not explicitly visible in the mockup, this is a standard requirement).
+7. Iconography
+ * Style: Icons should be consistent in style (e.g., line weight, filled vs. outlined) and complement the modern aesthetic.
+ * Color: Icons generally adopt Primary Text Color or Secondary Text Color. Active or hovered icons may use the Primary Accent Color.
+8. Conclusion
+Adherence to these visual and UX guidelines will ensure a consistent, engaging, and user-friendly interface. All animations should be tested for performance and smoothness across target devices and browsers. The color palette and reactive feedback are crucial for creating an intuitive and delightful user experience.
